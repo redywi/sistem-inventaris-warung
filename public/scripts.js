@@ -22,12 +22,15 @@ document.addEventListener('DOMContentLoaded', function() {
     forms.forEach(form => {
         form.addEventListener('submit', function(event) {
             let isValid = true;
-            const numberInputs = form.querySelectorAll('input[type="number"]');
-            
+            // Hanya validasi input number yang tidak hidden dan tidak disabled
+            const numberInputs = form.querySelectorAll('input[type="number"]:not([type="hidden"]):not([disabled])');
+
+            console.log('DEBUG: Jumlah input number yang divalidasi:', numberInputs.length);
             numberInputs.forEach(input => {
+                console.log('DEBUG: Input name:', input.name, 'value:', input.value);
                 // Memastikan input angka tidak kosong dan merupakan angka
                 if (input.value === '' || isNaN(parseFloat(input.value))) {
-                    alert('Kolom harga dan stok harus diisi dengan angka.');
+                    alert('Kolom angka harus diisi dengan benar.');
                     input.focus();
                     isValid = false;
                 }

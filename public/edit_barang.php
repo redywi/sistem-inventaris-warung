@@ -1,4 +1,10 @@
 <?php
+session_start();
+// Cek apakah pengguna sudah login, jika tidak, redirect ke halaman login
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit();
+}
 // File: public/edit_barang.php
 // Halaman untuk mengedit data barang yang sudah ada.
 
@@ -20,7 +26,7 @@ if (isset($_GET['id']) && is_numeric($_GET['id'])) {
         // 2. Mengambil Data Barang Spesifik dari Database
         // Menyiapkan dan menjalankan query untuk mengambil data barang berdasarkan ID.
         // Menggunakan prepared statement untuk keamanan.
-        $stmt = $pdo->prepare("SELECT * FROM tabel_barang WHERE id_barang =?");
+        $stmt = $pdo->prepare("SELECT * FROM tabel_barang WHERE id_barang =? AND is_deleted = 0");
         $stmt->execute([$id_barang]);
         $barang = $stmt->fetch(PDO::FETCH_ASSOC); // Mengambil data sebagai associative array. [1]
 

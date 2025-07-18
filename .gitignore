@@ -1,0 +1,29 @@
+# Konfigurasi database lokal (jika ada)
+config/database.php
+
+# File hasil export/laporan sementara
+*.csv
+*.xlsx
+
+# File backup/temporary
+*.bak
+*.tmp
+*.swp
+*.swo
+*~
+
+# Folder vendor (jika pakai composer di masa depan)
+vendor/
+
+# Folder node_modules (jika ada frontend build)
+node_modules/
+
+# File log
+*.log
+
+# File dan folder sistem/editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+.env

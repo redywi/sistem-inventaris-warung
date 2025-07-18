@@ -1,4 +1,11 @@
 <?php
+session_start();
+// Cek apakah pengguna sudah login, jika tidak, redirect ke halaman login
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit();
+}
+
 // File: public/daftar_kategori.php
 // Halaman untuk menampilkan daftar semua kategori barang.
 
@@ -6,9 +13,18 @@
 require_once '../config/database.php';
 require_once 'templates/header.php';
 
-// Mengambil semua data dari tabel kategori, diurutkan berdasarkan nama.
+// Proses pencarian kategori
+$search = isset($_GET['search']) ? trim($_GET['search']) : '';
+$where = '';
+$params = [];
+if ($search !== '') {
+    $where = "WHERE nama_kategori LIKE ?";
+    $params[] = "%$search%";
+}
+
 try {
-    $stmt = $pdo->query("SELECT * FROM tabel_kategori ORDER BY nama_kategori ASC");
+    $stmt = $pdo->prepare("SELECT * FROM tabel_kategori $where ORDER BY nama_kategori ASC");
+    $stmt->execute($params);
     $kategori_list = $stmt->fetchAll(PDO::FETCH_ASSOC); // [1, 2]
 } catch (PDOException $e) {
     // Menangani error jika query gagal.
@@ -18,6 +34,13 @@ try {
 ?>
 
 <h2>Manajemen Kategori Barang</h2>
+
+<form method="get" style="margin-bottom:18px; display:flex; gap:10px; flex-wrap:wrap;">
+    <input type="text" name="search" placeholder="Cari nama kategori..." value="<?php echo htmlspecialchars($search); ?>" style="flex:1; min-width:180px;">
+    <button type="submit" class="btn">Cari</button>
+    <a href="daftar_kategori.php" class="btn btn-secondary">Reset</a>
+</form>
+
 <a href="tambah_kategori.php" class="btn">Tambah Kategori Baru</a>
 <br><br>
 

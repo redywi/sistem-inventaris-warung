@@ -1,4 +1,10 @@
 <?php
+session_start();
+// Cek apakah pengguna sudah login, jika tidak, redirect ke halaman login
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit();
+}
 // File: public/edit_kategori.php
 // Halaman untuk mengedit data kategori yang sudah ada.
 

@@ -2,6 +2,13 @@
 // File: public/tambah_kategori.php
 // Halaman dengan formulir untuk menambah kategori baru.
 
+session_start();
+// Cek apakah pengguna sudah login, jika tidak, redirect ke halaman login
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit();
+}
+
 // Memuat template header.
 require_once 'templates/header.php';
 ?>

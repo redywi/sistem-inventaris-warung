@@ -1,8 +1,13 @@
 <?php
+session_start();
+// Cek apakah pengguna sudah login, jika tidak, redirect ke halaman login
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit();
+}
 // File: public/kategori_handler.php
 // Skrip ini menangani logika untuk menambah, mengubah, dan menghapus data kategori.
 
-session_start();
 require_once '../config/database.php';
 
 // Memeriksa metode request
@@ -66,7 +71,7 @@ if (isset($_GET['hapus_id'])) {
 
     try {
         // Cek dulu apakah ada barang yang menggunakan kategori ini
-        $check_sql = "SELECT COUNT(*) FROM tabel_barang WHERE id_kategori =?";
+        $check_sql = "SELECT COUNT(*) FROM tabel_barang WHERE id_kategori =? AND is_deleted = 0";
         $check_stmt = $pdo->prepare($check_sql);
         $check_stmt->execute([$id_kategori]);
         if ($check_stmt->fetchColumn() > 0) {

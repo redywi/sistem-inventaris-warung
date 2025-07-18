@@ -1,4 +1,10 @@
 <?php
+session_start();
+// Cek apakah pengguna sudah login, jika tidak, redirect ke halaman login
+if (!isset($_SESSION["user_id"])) {
+    header("Location: login.php");
+    exit();
+}
 require_once '../config/database.php';
 require_once 'templates/header.php';
 
@@ -8,7 +14,7 @@ $kategori_list = $kategori_stmt->fetchAll();
 ?>
 
 <h2>Tambah Barang Baru</h2>
-<form action="barang_handler.php" method="post">
+<form action="barang_handler.php" method="post" id="form-tambah-barang">
     <div class="form-group">
         <label for="nama_barang">Nama Barang</label>
         <input type="text" id="nama_barang" name="nama_barang" required>
@@ -40,4 +46,37 @@ $kategori_list = $kategori_stmt->fetchAll();
     <a href="daftar_barang.php" class="btn btn-secondary">Batal</a>
 </form>
 
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('form-tambah-barang');
+    form.addEventListener('submit', function(e) {
+        const nama = document.getElementById('nama_barang').value.trim();
+        const id_kat = document.getElementById('id_kategori').value;
+        if (!nama || !id_kat) return; // biar validasi server tetap jalan
+
+        e.preventDefault();
+        fetch('barang_handler.php?cek_restore=1&nama_barang=' + encodeURIComponent(nama) + '&id_kategori=' + encodeURIComponent(id_kat))
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.restoreable) {
+                    if (confirm('Barang dengan nama dan kategori ini pernah dihapus. Apakah Anda ingin mengembalikannya?')) {
+                        // Submit dengan parameter restore
+                        const inputRestore = document.createElement('input');
+                        inputRestore.type = 'hidden';
+                        inputRestore.name = 'restore_id_barang';
+                        inputRestore.value = data.id_barang;
+                        form.appendChild(inputRestore);
+
+                        // Pastikan tombol submit bernama tambah_barang tetap ada
+                        // (tidak perlu diubah, sudah ada di HTML)
+                        form.submit();
+                        return;
+                    }
+                }
+                form.submit();
+            })
+            .catch(() => form.submit());
+    });
+});
+</script>
 <?php require_once 'templates/footer.php';?>

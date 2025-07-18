@@ -47,10 +47,17 @@ body {
     margin: 0;
 }
 
+body.login-page {
+    background: #f7f7f7;
+}
+
 .container {
     max-width: 1100px;
-    margin: 0 auto;
-    padding: 20px;
+    margin: 40px auto 0 auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+    padding: 32px 28px;
 }
 
 /* Header dan Navigasi */
@@ -119,24 +126,33 @@ form {
     box-shadow: 0 2px 4px rgba(0,0,0,0.1);
 }
 
+.login-title {
+    text-align: center;
+    margin-bottom: 24px;
+}
+
 .form-group {
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 .form-group label {
     display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+    margin-bottom: 6px;
+    font-weight: 500;
 }
 
 .form-group input[type="text"],
 .form-group input[type="number"],
+.form-group input[type="password"],
 .form-group select {
     width: 100%;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
-    box-sizing: border-box; /* Penting untuk padding */
+    box-sizing: border-box;
+    font-size: 1rem;
+    background: #fafbfc;
+    margin-top: 2px;
 }
 
 /* Tombol */
@@ -150,33 +166,80 @@ form {
     cursor: pointer;
     text-decoration: none;
     font-size: 1rem;
+    transition: background 0.2s;
 }
 
 .btn:hover, button:hover {
-    background-color: #004d40;
+    background: #004d40;
 }
 
-.btn-secondary { background-color: #757575; }
-.btn-secondary:hover { background-color: #424242; }
-.btn-edit { background-color: #ffb300; color: #000; padding: 5px 10px; font-size: 0.9rem; }
-.btn-edit:hover { background-color: #ffa000; }
-.btn-hapus { background-color: #e53935; padding: 5px 10px; font-size: 0.9rem; }
-.btn-hapus:hover { background-color: #c62828; }
+.btn-secondary {
+    background-color: #757575;
+    color: #fff;
+}
+
+.btn-secondary:hover {
+    background-color: #424242;
+}
+
+.btn-edit {
+    background-color: #ffb300;
+    color: #000;
+    padding: 5px 12px;
+    font-size: 0.95rem;
+}
+
+.btn-edit:hover {
+    background-color: #ffa000;
+}
+
+.btn-hapus {
+    background-color: #e53935;
+    color: #fff;
+    padding: 5px 12px;
+    font-size: 0.95rem;
+}
+
+.btn-hapus:hover {
+    background-color: #c62828;
+}
 
 /* Notifikasi */
 .alert {
-    padding: 15px;
-    margin-bottom: 20px;
-    border: 1px solid transparent;
+    padding: 12px 18px;
     border-radius: 4px;
+    margin-bottom: 18px;
+    font-size: 1rem;
+    border: 1px solid transparent;
 }
+
 .alert-success {
-    color: #155724;
-    background-color: #d4edda;
-    border-color: #c3e6cb;
+    color: #2e7d32;
+    background: #eaffea;
+    border-color: #2e7d32;
 }
+
 .alert-error {
-    color: #721c24;
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
+    color: #d8000c;
+    background: #ffeaea;
+    border-color: #d8000c;
+}
+
+/* Responsive untuk mobile */
+@media (max-width: 700px) {
+    .container {
+        max-width: 98vw;
+        padding: 12px 4vw;
+    }
+    header, form, table {
+        padding: 10px;
+    }
+    .dashboard-stats {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+    nav a {
+        display: block;
+        margin: 6px 0;
+    }
 }
